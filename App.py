@@ -748,7 +748,7 @@ with tab2:
         # -----------------------------
         # CHART 2 — Department vs Avg Risk
         # -----------------------------
-       dept_df = dept_avg.reset_index()
+        dept_df = dept_avg.reset_index()
 
         fig2 = px.bar(
             dept_df,
@@ -1394,6 +1394,7 @@ st.caption(
     "OrgaKnow Retention Intelligence · Decision-support analytics. "
     "Predictions are probabilistic and should be combined with HR judgment."
 )
+
 
 
 
