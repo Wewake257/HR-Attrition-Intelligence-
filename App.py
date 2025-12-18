@@ -748,14 +748,21 @@ with tab2:
         # -----------------------------
         # CHART 2 — Department vs Avg Risk
         # -----------------------------
-       fig2 = px.bar(
+       dept_df = dept_avg.reset_index()
+
+        fig2 = px.bar(
             dept_df,
             x="Department",
             y="AttritionRisk",
             title="Average Attrition Risk by Department",
             text="AttritionRisk"
         )
-        fig2.update_traces(texttemplate="%{text:.1f}%", textposition="outside")
+
+        fig2.update_traces(
+            texttemplate="%{text:.1f}%",
+            textposition="outside"
+        )
+
         st.plotly_chart(fig2, use_container_width=True)
 
         # -----------------------------
@@ -1387,6 +1394,7 @@ st.caption(
     "OrgaKnow Retention Intelligence · Decision-support analytics. "
     "Predictions are probabilistic and should be combined with HR judgment."
 )
+
 
 
 
