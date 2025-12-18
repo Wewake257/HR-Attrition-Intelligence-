@@ -993,15 +993,14 @@ with tab3:
         # --------------------------------
         # VISUAL 2 — Action Types
         # --------------------------------
-        fig2 = px.bar(
+       fig2 = px.bar(
             actions_df,
             x="SelectedAction",
-            title="Types of Retention Actions Taken"
+            title="Types of Retention Actions Taken",
             text_auto=True
         )
-        
         st.plotly_chart(fig2, use_container_width=True)
-
+        
         # --------------------------------
         # VISUAL 3 — Risk vs Action Coverage
         # --------------------------------
@@ -1387,6 +1386,7 @@ st.caption(
     "OrgaKnow Retention Intelligence · Decision-support analytics. "
     "Predictions are probabilistic and should be combined with HR judgment."
 )
+
 
 
 
