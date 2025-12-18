@@ -362,10 +362,10 @@ st.markdown("""
 <div class="exec-header">
 """, unsafe_allow_html=True)
 
-col_logo, col_title = st.columns([1, 5])
+col_logo, col_title = st.columns([1, 4])
 
 with col_logo:
-    st.image(r"D:/USer/orgaknow_logo.jpeg", width=90)
+    st.image("https://github.com/Wewake257/HR-Attrition-Intelligence-/blob/main/orgaknow_logo.jpeg", width=90)
 
 with col_title:
     st.markdown("""
@@ -1363,4 +1363,5 @@ st.caption(
     "OrgaKnow Retention Intelligence · Decision-support analytics. "
     "Predictions are probabilistic and should be combined with HR judgment."
 )
+
 
