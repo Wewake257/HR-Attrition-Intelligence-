@@ -365,7 +365,7 @@ st.markdown("""
 col_logo, col_title = st.columns([1, 5])
 
 with col_logo:
-    st.image("orgaknow_logo.jpeg", width=90)
+    st.image(r"D:/USer/orgaknow_logo.jpeg", width=90)
 
 with col_title:
     st.markdown("""
@@ -458,13 +458,16 @@ def risk_color(val):
         return "background-color: #78350f; color: white;"
     else:
         return "background-color: #14532d; color: white;"
+
 def risk_arrow(change):
     if change > 0:
-        return "↓ Improved"
+        return "↓ Risk Reduced"
     elif change < 0:
-        return "↑ Worsened"
+        return "↑ Risk Increased"
     else:
         return "→ No Change"
+
+        
 def style_risk_rows(row):
     if "RiskBand" not in row:
         return [""] * len(row)
@@ -576,6 +579,9 @@ with tab1:
             "AttritionRisk": risk,
             "RiskBand": risk_band(risk)
         }
+    if emp_id in employee_df["EmployeeID"].astype(str).values:
+        st.error("Employee ID already exists. Duplicate entries are not allowed.")
+        st.stop()
 
         employee_df = pd.concat([employee_df, pd.DataFrame([new_row])], ignore_index=True)
         employee_df.to_csv(DATA_FILE, index=False)
@@ -594,7 +600,6 @@ with tab1:
         "orgaknow_employee_attrition_data.csv",
         "text/csv"
     )
-ACTIONS_FILE = "attrition_actions.csv"
 
 if os.path.exists(ACTIONS_FILE):
     actions_df = pd.read_csv(ACTIONS_FILE)
@@ -664,38 +669,6 @@ if "OutcomeDate" not in actions_df.columns:
 # =================================================
 # TAB 2 — EXECUTIVE DASHBOARD
 # =================================================
-st.info(
-    "📌 **Executive Insight:** A small number of departments and roles account "
-    "for a disproportionate share of attrition risk. Targeted interventions "
-    "can significantly reduce projected exits."
-)
-with tab2:
-
-    st.markdown("### CHRO Executive Dashboard")
-
-    if employee_df.empty:
-        st.warning("No employee data available.")
-    else:
-        total = len(employee_df)
-        high = len(employee_df[employee_df["RiskBand"] == "High"])
-        medium = len(employee_df[employee_df["RiskBand"] == "Medium"])
-        low = len(employee_df[employee_df["RiskBand"] == "Low"])
-
-        expected_leavers = round(employee_df["AttritionRisk"].sum() / 100, 1)
-        estimated_cost = int(expected_leavers * 500000)
-
-        col1, col2, col3, col4 = st.columns(4)
-        col1.metric("Total Employees", total)
-        col2.metric("High Risk", high)
-        col3.metric("Expected Leavers", expected_leavers)
-        col4.metric("Estimated Attrition Cost", f"${estimated_cost:,}")
-
-        fig = px.pie(employee_df, names="RiskBand", title="Risk Distribution")
-        st.plotly_chart(fig, use_container_width=True)
-
-        dept_avg = employee_df.groupby("Department")["AttritionRisk"].mean().reset_index()
-        fig2 = px.bar(dept_avg, x="Department", y="AttritionRisk", title="Avg Risk by Department")
-        st.plotly_chart(fig2, use_container_width=True)
 with tab2:
 
     st.markdown("## CHRO Executive Dashboard")
@@ -830,38 +803,38 @@ with tab2:
             title="Stress Level vs Attrition Risk"
         )
         st.plotly_chart(fig6, use_container_width=True)
-# -----------------------------
-# CHART 7 — Department x Role Risk Heatmap
-# -----------------------------
-heatmap_df = employee_df.pivot_table(
-    values="AttritionRisk",
-    index="Department",
-    columns="Role",
-    aggfunc="mean"
-).reset_index()
+        # -----------------------------
+        # CHART 7 — Department x Role Risk Heatmap
+        # -----------------------------
+        heatmap_df = employee_df.pivot_table(
+                    values="AttritionRisk",
+                    index="Department",
+                    columns="Role",
+                    aggfunc="mean"
+        ).reset_index()
 
-fig7 = px.imshow(
-    heatmap_df.set_index("Department"),
-    title="Attrition Risk Heatmap: Department × Role",
-    aspect="auto"
-)
+        fig7 = px.imshow(
+                    heatmap_df.set_index("Department"),
+                    title="Attrition Risk Heatmap: Department × Role",
+                    aspect="auto"
+        )
 
-st.plotly_chart(fig7, use_container_width=True)
-# -----------------------------
-# CHART 8 — Workforce Risk Tree Map
-# -----------------------------
-treemap_df = employee_df.groupby(
-    ["Department", "RiskBand"]
-).size().reset_index(name="Headcount")
+        st.plotly_chart(fig7, use_container_width=True)
+        # -----------------------------
+        # CHART 8 — Workforce Risk Tree Map
+        # -----------------------------
+        treemap_df = employee_df.groupby(
+            ["Department", "RiskBand"]
+        ).size().reset_index(name="Headcount")
 
-fig8 = px.treemap(
-    treemap_df,
-    path=["Department", "RiskBand"],
-    values="Headcount",
-    title="Workforce Risk Composition Tree Map"
-)
+        fig8 = px.treemap(
+                    treemap_df,
+                    path=["Department", "RiskBand"],
+                    values="Headcount",
+                    title="Workforce Risk Composition Tree Map"
+        )
 
-st.plotly_chart(fig8, use_container_width=True)
+        st.plotly_chart(fig8, use_container_width=True)
 with tab3:
 
     st.markdown("## Prescriptive Actions Engine")
@@ -1403,5 +1376,3 @@ st.caption(
     "OrgaKnow Retention Intelligence · Decision-support analytics. "
     "Predictions are probabilistic and should be combined with HR judgment."
 )
-
-
