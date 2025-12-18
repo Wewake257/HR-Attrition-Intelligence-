@@ -739,6 +739,10 @@ with tab2:
             names="RiskBand",
             title="Workforce Risk Distribution"
         )
+        fig.update_traces(
+            texttemplate="%{text:.1f}%",
+            textposition="outside"
+        )
         st.plotly_chart(fig1, use_container_width=True)
 
         # -----------------------------
@@ -751,6 +755,7 @@ with tab2:
             y="AttritionRisk",
             title="Average Attrition Risk by Department"
         )
+        fig2.update_traces(texttemplate="%{text:.1f}%", textposition="outside")
         st.plotly_chart(fig2, use_container_width=True)
 
         # -----------------------------
@@ -763,6 +768,7 @@ with tab2:
             y="AttritionRisk",
             title="Average Attrition Risk by Role Level"
         )
+        fig3.update_traces(texttemplate="%{text:.1f}%", textposition="outside")
         st.plotly_chart(fig3, use_container_width=True)
 
         # -----------------------------
@@ -779,8 +785,8 @@ with tab2:
             y="Headcount",
             title="Attrition Risk Pyramid"
         )
+        fig4.update_traces(textposition="outside")
         st.plotly_chart(fig4, use_container_width=True)
-
         # -----------------------------
         # CHART 5 — Satisfaction vs Risk
         # -----------------------------
@@ -791,6 +797,7 @@ with tab2:
             color="RiskBand",
             title="Job Satisfaction vs Attrition Risk"
         )
+    
         st.plotly_chart(fig5, use_container_width=True)
 
         # -----------------------------
@@ -818,7 +825,7 @@ with tab2:
                     title="Attrition Risk Heatmap: Department × Role",
                     aspect="auto"
         )
-
+    
         st.plotly_chart(fig7, use_container_width=True)
         # -----------------------------
         # CHART 8 — Workforce Risk Tree Map
@@ -990,7 +997,9 @@ with tab3:
             actions_df,
             x="SelectedAction",
             title="Types of Retention Actions Taken"
+            text_auto=True
         )
+        
         st.plotly_chart(fig2, use_container_width=True)
 
         # --------------------------------
@@ -1168,7 +1177,9 @@ with tab5:
             x="SelectedAction",
             y="Risk_Change",
             title="Average Risk Reduction by Action Type"
+            text="Risk_Change"
         )
+        fig1.update_traces(texttemplate="%{text:.2f}", textposition="outside")
         st.plotly_chart(fig1, use_container_width=True)
 
         # -----------------------------------------
@@ -1376,6 +1387,7 @@ st.caption(
     "OrgaKnow Retention Intelligence · Decision-support analytics. "
     "Predictions are probabilistic and should be combined with HR judgment."
 )
+
 
 
 
