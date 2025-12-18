@@ -362,10 +362,10 @@ st.markdown("""
 <div class="exec-header">
 """, unsafe_allow_html=True)
 
-col_logo, col_title = st.columns([1, 4])
+col_logo, col_title = st.columns([1, 5])
 
 with col_logo:
-    st.image("https://raw.githubusercontent.com/Wewake257/HR-Attrition-Intelligence-/main/orgaknow_logo.jpeg", width=90)
+    st.image(r"D:/USer/orgaknow_logo.jpeg", width=90)
 
 with col_title:
     st.markdown("""
@@ -739,30 +739,18 @@ with tab2:
             names="RiskBand",
             title="Workforce Risk Distribution"
         )
-        fig.update_traces(
-            texttemplate="%{text:.1f}%",
-            textposition="outside"
-        )
         st.plotly_chart(fig1, use_container_width=True)
 
         # -----------------------------
         # CHART 2 — Department vs Avg Risk
         # -----------------------------
         dept_df = dept_avg.reset_index()
-
         fig2 = px.bar(
             dept_df,
             x="Department",
             y="AttritionRisk",
-            title="Average Attrition Risk by Department",
-            text="AttritionRisk"
+            title="Average Attrition Risk by Department"
         )
-
-        fig2.update_traces(
-            texttemplate="%{text:.1f}%",
-            textposition="outside"
-        )
-
         st.plotly_chart(fig2, use_container_width=True)
 
         # -----------------------------
@@ -775,7 +763,6 @@ with tab2:
             y="AttritionRisk",
             title="Average Attrition Risk by Role Level"
         )
-        fig3.update_traces(texttemplate="%{text:.1f}%", textposition="outside")
         st.plotly_chart(fig3, use_container_width=True)
 
         # -----------------------------
@@ -792,8 +779,8 @@ with tab2:
             y="Headcount",
             title="Attrition Risk Pyramid"
         )
-        fig4.update_traces(textposition="outside")
         st.plotly_chart(fig4, use_container_width=True)
+
         # -----------------------------
         # CHART 5 — Satisfaction vs Risk
         # -----------------------------
@@ -804,7 +791,6 @@ with tab2:
             color="RiskBand",
             title="Job Satisfaction vs Attrition Risk"
         )
-    
         st.plotly_chart(fig5, use_container_width=True)
 
         # -----------------------------
@@ -832,7 +818,7 @@ with tab2:
                     title="Attrition Risk Heatmap: Department × Role",
                     aspect="auto"
         )
-    
+
         st.plotly_chart(fig7, use_container_width=True)
         # -----------------------------
         # CHART 8 — Workforce Risk Tree Map
@@ -1000,14 +986,13 @@ with tab3:
         # --------------------------------
         # VISUAL 2 — Action Types
         # --------------------------------
-       fig2 = px.bar(
+        fig2 = px.bar(
             actions_df,
             x="SelectedAction",
-            title="Types of Retention Actions Taken",
-            text_auto=True
+            title="Types of Retention Actions Taken"
         )
         st.plotly_chart(fig2, use_container_width=True)
-        
+
         # --------------------------------
         # VISUAL 3 — Risk vs Action Coverage
         # --------------------------------
@@ -1183,9 +1168,7 @@ with tab5:
             x="SelectedAction",
             y="Risk_Change",
             title="Average Risk Reduction by Action Type"
-            text="Risk_Change"
         )
-        fig1.update_traces(texttemplate="%{text:.2f}", textposition="outside")
         st.plotly_chart(fig1, use_container_width=True)
 
         # -----------------------------------------
@@ -1201,7 +1184,6 @@ with tab5:
             color="ActionSuccess",
             title="Action Effectiveness Distribution"
         )
-        
         st.plotly_chart(fig2, use_container_width=True)
 
         # -----------------------------------------
@@ -1394,11 +1376,3 @@ st.caption(
     "OrgaKnow Retention Intelligence · Decision-support analytics. "
     "Predictions are probabilistic and should be combined with HR judgment."
 )
-
-
-
-
-
-
-
-
