@@ -669,6 +669,13 @@ if "OutcomeDate" not in actions_df.columns:
 # =================================================
 # TAB 2 — EXECUTIVE DASHBOARD
 # =================================================
+# -----------------------------
+# ONLY GRAPH LABEL ENHANCEMENTS ADDED
+# -----------------------------
+
+# =============================
+# TAB 2 — EXECUTIVE DASHBOARD
+# =============================
 with tab2:
 
     st.markdown("## CHRO Executive Dashboard")
@@ -677,9 +684,6 @@ with tab2:
     if employee_df.empty:
         st.warning("No employee data available.")
     else:
-        # -----------------------------
-        # KPI CALCULATIONS
-        # -----------------------------
         total_emp = len(employee_df)
 
         high_df = employee_df[employee_df["RiskBand"] == "High"]
@@ -691,10 +695,8 @@ with tab2:
         low_cnt = len(low_df)
 
         high_pct = round((high_cnt / total_emp) * 100, 1)
-
         expected_leavers = round(employee_df["AttritionRisk"].sum() / 100, 2)
-        cost_per_exit = 500000
-        est_cost = int(expected_leavers * cost_per_exit)
+        est_cost = int(expected_leavers * 500000)
 
         avg_risk = round(employee_df["AttritionRisk"].mean(), 2)
         risk_std = round(employee_df["AttritionRisk"].std(), 2)
@@ -708,9 +710,6 @@ with tab2:
         top_risk_dept = dept_avg.idxmax()
         low_risk_dept = dept_avg.idxmin()
 
-        # -----------------------------
-        # KPI DISPLAY (12 KPIs)
-        # -----------------------------
         col1, col2, col3, col4 = st.columns(4)
         col1.metric("Total Employees", total_emp)
         col2.metric("High Risk Employees", high_cnt)
@@ -731,43 +730,35 @@ with tab2:
 
         st.markdown("---")
 
-        # -----------------------------
-        # CHART 1 — Risk Distribution
-        # -----------------------------
-        fig1 = px.pie(
-            employee_df,
-            names="RiskBand",
-            title="Workforce Risk Distribution"
-        )
+        # ---- Chart 1 — Risk Distribution
+        fig1 = px.pie(employee_df, names="RiskBand", title="Workforce Risk Distribution")
         st.plotly_chart(fig1, use_container_width=True)
 
-        # -----------------------------
-        # CHART 2 — Department vs Avg Risk
-        # -----------------------------
+        # ---- Chart 2 — Department vs Avg Risk (LABELS ADDED)
         dept_df = dept_avg.reset_index()
         fig2 = px.bar(
             dept_df,
             x="Department",
             y="AttritionRisk",
-            title="Average Attrition Risk by Department"
+            title="Average Attrition Risk by Department",
+            text_auto=True
         )
+        fig2.update_traces(textposition="outside")
         st.plotly_chart(fig2, use_container_width=True)
 
-        # -----------------------------
-        # CHART 3 — Role vs Avg Risk
-        # -----------------------------
+        # ---- Chart 3 — Role vs Avg Risk (LABELS ADDED)
         role_df = employee_df.groupby("Role")["AttritionRisk"].mean().reset_index()
         fig3 = px.bar(
             role_df,
             x="Role",
             y="AttritionRisk",
-            title="Average Attrition Risk by Role Level"
+            title="Average Attrition Risk by Role Level",
+            text_auto=True
         )
+        fig3.update_traces(textposition="outside")
         st.plotly_chart(fig3, use_container_width=True)
 
-        # -----------------------------
-        # CHART 4 — Risk Pyramid
-        # -----------------------------
+        # ---- Chart 4 — Risk Pyramid (LABELS ADDED)
         pyramid_df = pd.DataFrame({
             "RiskBand": ["Low", "Medium", "High"],
             "Headcount": [low_cnt, med_cnt, high_cnt]
@@ -777,13 +768,13 @@ with tab2:
             pyramid_df,
             x="RiskBand",
             y="Headcount",
-            title="Attrition Risk Pyramid"
+            title="Attrition Risk Pyramid",
+            text_auto=True
         )
+        fig4.update_traces(textposition="outside")
         st.plotly_chart(fig4, use_container_width=True)
 
-        # -----------------------------
-        # CHART 5 — Satisfaction vs Risk
-        # -----------------------------
+        # ---- Chart 5 — Job Satisfaction vs Risk
         fig5 = px.scatter(
             employee_df,
             x="JobSatisfaction",
@@ -793,9 +784,7 @@ with tab2:
         )
         st.plotly_chart(fig5, use_container_width=True)
 
-        # -----------------------------
-        # CHART 6 — Stress vs Risk
-        # -----------------------------
+        # ---- Chart 6 — Stress vs Risk
         fig6 = px.box(
             employee_df,
             x="StressLevel",
@@ -803,38 +792,36 @@ with tab2:
             title="Stress Level vs Attrition Risk"
         )
         st.plotly_chart(fig6, use_container_width=True)
-        # -----------------------------
-        # CHART 7 — Department x Role Risk Heatmap
-        # -----------------------------
-        heatmap_df = employee_df.pivot_table(
-                    values="AttritionRisk",
-                    index="Department",
-                    columns="Role",
-                    aggfunc="mean"
-        ).reset_index()
 
-        fig7 = px.imshow(
-                    heatmap_df.set_index("Department"),
-                    title="Attrition Risk Heatmap: Department × Role",
-                    aspect="auto"
+        # ---- Chart 7 — Heatmap
+        heatmap_df = employee_df.pivot_table(
+            values="AttritionRisk",
+            index="Department",
+            columns="Role",
+            aggfunc="mean"
         )
 
+        fig7 = px.imshow(
+            heatmap_df,
+            title="Attrition Risk Heatmap: Department × Role",
+            aspect="auto"
+        )
         st.plotly_chart(fig7, use_container_width=True)
-        # -----------------------------
-        # CHART 8 — Workforce Risk Tree Map
-        # -----------------------------
+
+        # ---- Chart 8 — Treemap (VALUES SHOWN)
         treemap_df = employee_df.groupby(
             ["Department", "RiskBand"]
         ).size().reset_index(name="Headcount")
 
         fig8 = px.treemap(
-                    treemap_df,
-                    path=["Department", "RiskBand"],
-                    values="Headcount",
-                    title="Workforce Risk Composition Tree Map"
+            treemap_df,
+            path=["Department", "RiskBand"],
+            values="Headcount",
+            title="Workforce Risk Composition Tree Map"
         )
-
+        fig8.update_traces(textinfo="label+value")
         st.plotly_chart(fig8, use_container_width=True)
+
 with tab3:
 
     st.markdown("## Prescriptive Actions Engine")
@@ -1376,3 +1363,4 @@ st.caption(
     "OrgaKnow Retention Intelligence · Decision-support analytics. "
     "Predictions are probabilistic and should be combined with HR judgment."
 )
+
