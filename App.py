@@ -9,7 +9,7 @@ from io import BytesIO
 # Page Config
 # -------------------------------------------------
 st.set_page_config(
-    page_title="OrgaKnow | Retention Intelligence",
+    page_title="Retention Intelligence Simulator",
     layout="wide"
 )
 # -------------------------------------------------
@@ -362,10 +362,9 @@ st.markdown("""
 <div class="exec-header">
 """, unsafe_allow_html=True)
 
-col_logo, col_title = st.columns([1, 4])
+col_title = st.columns([1, 4])
 
-with col_logo:
-    st.image("https://raw.githubusercontent.com/Wewake257/HR-Attrition-Intelligence-/main/orgaknow_logo.jpeg", width=90)
+
 
 with col_title:
     st.title("HR Attrition Intelligence")
@@ -1366,6 +1365,7 @@ st.caption(
     "OrgaKnow Retention Intelligence · Decision-support analytics. "
     "Predictions are probabilistic and should be combined with HR judgment."
 )
+
 
 
 
