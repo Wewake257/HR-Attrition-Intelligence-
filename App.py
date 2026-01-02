@@ -319,7 +319,7 @@ if not st.session_state.logged_in:
     with col2:
         st.markdown("""
         <div class="login-card">
-            <div class="login-title">OrgaKnow Access Portal</div>
+            <div class="login-title">Access Portal</div>
             <div class="login-subtitle">
                 Secure role-based access to Retention Intelligence
             </div>
@@ -371,7 +371,7 @@ with col_title:
 
 with col_title:
     st.markdown("""
-    <div class="exec-title">OrgaKnow – Retention Intelligence</div>
+    <div class="exec-title">Retention Intelligence</div>
     <div class="exec-subtitle">
         Enterprise Workforce Risk Intelligence Platform
     </div>
@@ -1362,9 +1362,10 @@ with tab6:
         )
 st.markdown("---")
 st.caption(
-    "OrgaKnow Retention Intelligence · Decision-support analytics. "
+    "Retention Intelligence · Decision-support analytics. "
     "Predictions are probabilistic and should be combined with HR judgment."
 )
+
 
 
 
